@@ -15,7 +15,9 @@ io.on("connection", function(socket){
     socket.on("send-location" , function(data){
         io.emit("recieve-location",{id : socket.id , ...data})
     })
-    console.log('connected')
+    socket.on("disconnected" ,function(){
+        io.emit("user-disconnected", socket.id)
+    })
 })
 
 app.get('/',(req,res)=>{
