@@ -17,9 +17,20 @@ if(navigator.geolocation){
     )
 }
 
-const map = L.map("map").setView([0,0] , 10)
+const map = L.map("map").setView([0,0] , 16)
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
     atrribution : "@zaidrangrez"
 }).addTo(map)
 
+const markers = {}
+
+socket.on("recieve-location" ,(data) => {
+    const {id, longitude ,latitude} = data ;
+    map.setView([latitude , longitude])
+    if(markers[id]){
+        markers[id].setLetLng([latitude,longitude])
+    }else{
+        markers[id] =  L.marker([latitude,longitude]).addTo(map)
+    }
+})
